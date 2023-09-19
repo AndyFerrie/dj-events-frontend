@@ -41,6 +41,12 @@ export default function EventPage({event}) {
           <p>{event.description}</p>
           <h3>Venue: {event.venue}</h3>
           <p>{event.address}</p>
+
+          <Link legacyBehavior href='/events'>
+            <a className={styles.back}>
+              {'<'} Go Back
+            </a>
+          </Link>
         </div>
     </Layout>
   )
