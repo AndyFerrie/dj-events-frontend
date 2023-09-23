@@ -6,11 +6,25 @@ import styles from "@/styles/Event.module.css"
 import Link from "next/link"
 import Image from "next/image"
 import { FaPencilAlt, FaTimes } from "react-icons/fa"
+import { useRouter } from 'next/router'
 
 
 export default function EventPage({event}) {
-  const deleteEvent = (e) => {
-    console.log('delete')
+  const router = useRouter()
+
+  const deleteEvent = async (e) => {
+    if(confirm('Are you sure?')) {
+      const res = await fetch(`${API_URL}/api/events/${event.id}`, {method: 'DELETE'})
+      console.log(`${API_URL}/events/${event.id}`)
+
+      const data = await res.json()
+
+      if(!res.ok) {
+        toast.error(data.message)
+      } else {
+        router.push('/events')
+      }
+    }
   }
 
   return (
@@ -18,7 +32,7 @@ export default function EventPage({event}) {
         <div className={styles.event}>
 
           <div className={styles.controls}>
-            <Link legacyBehavior href={`/events/edit/${event.slug}`}>
+            <Link legacyBehavior href={`/events/edit/${event.id}`}>
               <a>
                 <FaPencilAlt /> Edit Event
               </a>
@@ -29,21 +43,22 @@ export default function EventPage({event}) {
           </div>
 
           <span>
-            {new Date(event.date).toDateString()} at {event.time}
+            {new Date(event.attributes.date).toDateString()} at {event.attributes.time}
           </span>
-          <h1>{event.name}</h1>
-          {event.image.data?.attributes && (
+          <h1>{event.attributes.name}</h1>
+          <ToastContainer />
+          {event.attributes.image.data?.attributes && (
             <div className={styles.image}>
-              <Image src={event.image.data.attributes.formats.medium.url} width={960} height={600}></Image>
+              <Image src={event.attributes.image.data.attributes.formats.medium.url} width={960} height={600}></Image>
             </div>
           )}
 
           <h3>Peformers:</h3>
-          <p>{event.performers}</p>
+          <p>{event.attributes.performers}</p>
           <h3>Description</h3>
-          <p>{event.description}</p>
-          <h3>Venue: {event.venue}</h3>
-          <p>{event.address}</p>
+          <p>{event.attributes.description}</p>
+          <h3>Venue: {event.attributes.venue}</h3>
+          <p>{event.attributes.address}</p>
 
           <Link legacyBehavior href='/events'>
             <a className={styles.back}>
@@ -75,9 +90,7 @@ export async function getStaticProps({params: {slug}}) {
   const res = await fetch(`${API_URL}/api/events?populate=*&filters[slug][$eq]=${slug}`)
   const results = await res.json()
 
-  console.log(results)
-
-  const event = results.data[0].attributes
+  const event = results.data[0]
 
   return {
     props: {
