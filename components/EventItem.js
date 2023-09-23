@@ -4,10 +4,11 @@ import styles from "@/styles/EventItem.module.css"
 
 export default function EventItem({event}) {
   return (
+    console.log(event),
     <div className={styles.event}>
         <div className={styles.img}>
             <Image 
-                src={event.image ? event.image.data.attributes.formats.thumbnail.url : '/images/event-default.png'} 
+                src={event.image.data?.attributes ? event.image.data.attributes.formats.thumbnail.url : '/images/event-default.png'} 
                 width={170} 
                 height={100} 
             />
