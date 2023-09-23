@@ -40,7 +40,11 @@ export default function AddEventPage() {
     })
 
     if(!res.ok) {
-      toast.error('Something Went Wrong')
+      if (res.status === 400) {
+        toast.error('Something went wrong. Check event does not already exist.')
+      } else {
+        toast.error('Something Went Wrong')
+      }
     } else {
       const result = await res.json()
       const event = result.data.attributes
