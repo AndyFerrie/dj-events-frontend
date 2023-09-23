@@ -4,7 +4,6 @@ import styles from "@/styles/EventItem.module.css"
 
 export default function EventItem({event}) {
   return (
-    console.log(event),
     <div className={styles.event}>
         <div className={styles.img}>
             <Image 
