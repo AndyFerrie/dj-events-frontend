@@ -1,9 +1,12 @@
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Layout from "@/components/Layout"
 import { API_URL } from "@/config"
 import styles from "@/styles/Event.module.css"
 import Link from "next/link"
 import Image from "next/image"
 import { FaPencilAlt, FaTimes } from "react-icons/fa"
+
 
 export default function EventPage({event}) {
   const deleteEvent = (e) => {
@@ -15,7 +18,7 @@ export default function EventPage({event}) {
         <div className={styles.event}>
 
           <div className={styles.controls}>
-            <Link legacyBehavior href={`/events/edit/${event.id}`}>
+            <Link legacyBehavior href={`/events/edit/${event.slug}`}>
               <a>
                 <FaPencilAlt /> Edit Event
               </a>
@@ -29,11 +32,11 @@ export default function EventPage({event}) {
             {new Date(event.date).toDateString()} at {event.time}
           </span>
           <h1>{event.name}</h1>
-          {/* {event.image && (
+          {event.image.data?.attributes && (
             <div className={styles.image}>
               <Image src={event.image.data.attributes.formats.medium.url} width={960} height={600}></Image>
             </div>
-          )} */}
+          )}
 
           <h3>Peformers:</h3>
           <p>{event.performers}</p>
@@ -71,6 +74,8 @@ export async function getStaticPaths() {
 export async function getStaticProps({params: {slug}}) {
   const res = await fetch(`${API_URL}/api/events?populate=*&filters[slug][$eq]=${slug}`)
   const results = await res.json()
+
+  console.log(results)
 
   const event = results.data[0].attributes
 
