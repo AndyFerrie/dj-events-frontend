@@ -1,9 +1,11 @@
 import moment from 'moment/moment'
+import { FaImage } from 'react-icons/fa'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useState } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
+import Image from 'next/image'
 import Layout from "@/components/Layout"
 import { API_URL } from "@/config/index"
 import styles from "@/styles/Form.module.css"
@@ -20,6 +22,8 @@ export default function EditEventPage({event}) {
     description: event.data.attributes.description,
     slug: event.data.attributes.slug,
   })
+
+  const [imagePreview, setImagePreview] = useState(event.data.attributes.image.data ? event.data.attributes.image.data.attributes.formats.thumbnail.url : null)
 
   const router = useRouter()
 
@@ -155,15 +159,31 @@ export default function EditEventPage({event}) {
           <input type='submit' value='Update Event' className='btn' />
           
         </form>
+
+        <h2>Event Image</h2>
+        {imagePreview ? (
+          <Image src={imagePreview} height={100} width={170}/>
+          ) : (
+            <div>
+              <p>No Image uploaded</p>
+            </div>
+        )}
+
+        <div>
+          <button className="btn-secondary">
+            <FaImage /> Set Image
+          </button>
+        </div>
     </Layout>
   )
 }
 
 export async function getServerSideProps({params: {id}}) {
-  const res = await fetch(`${API_URL}/api/events/${id}`)
+  const res = await fetch(`${API_URL}/api/events/${id}?populate=*`)
   const event = await res.json()  
 
   console.log(event)
+  console.log(event.data.attributes.image.data)
 
   return {
     props: {
