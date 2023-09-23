@@ -49,7 +49,7 @@ export default function AddEventPage() {
   }
 
   const createSlug = (e) => {
-    const slug = slugify(`${values.name}-${values.date}-${values.venue}`)
+    const slug = slugify(`${values.name}-${values.date}-${values.venue}`, {lower: true})
     setValues({...values, ['slug']: slug})
   }
 
