@@ -7,6 +7,7 @@ import { useRouter } from "next/router"
 import Link from "next/link"
 import Image from 'next/image'
 import Layout from "@/components/Layout"
+import Modal from '@/components/Modal'
 import { API_URL } from "@/config/index"
 import styles from "@/styles/Form.module.css"
 import slugify from 'slugify'
@@ -24,6 +25,8 @@ export default function EditEventPage({event}) {
   })
 
   const [imagePreview, setImagePreview] = useState(event.data.attributes.image.data ? event.data.attributes.image.data.attributes.formats.thumbnail.url : null)
+
+  const [showModal, setShowModal] = useState(false)
 
   const router = useRouter()
 
@@ -170,10 +173,14 @@ export default function EditEventPage({event}) {
         )}
 
         <div>
-          <button className="btn-secondary">
+          <button onClick={() => setShowModal(true)} className="btn-secondary">
             <FaImage /> Set Image
           </button>
         </div>
+
+        <Modal show={showModal} onClose={() => setShowModal(false)}>
+          IMAGE UPLOAD
+        </Modal>
     </Layout>
   )
 }
