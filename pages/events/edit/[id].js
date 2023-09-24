@@ -8,6 +8,7 @@ import Link from "next/link"
 import Image from 'next/image'
 import Layout from "@/components/Layout"
 import Modal from '@/components/Modal'
+import ImageUpload from '@/components/ImageUpload'
 import { API_URL } from "@/config/index"
 import styles from "@/styles/Form.module.css"
 import slugify from 'slugify'
@@ -23,6 +24,8 @@ export default function EditEventPage({event}) {
     description: event.data.attributes.description,
     slug: event.data.attributes.slug,
   })
+
+  console.log(event.data.id)
 
   const [imagePreview, setImagePreview] = useState(event.data.attributes.image.data ? event.data.attributes.image.data.attributes.formats.thumbnail.url : null)
 
@@ -70,6 +73,15 @@ export default function EditEventPage({event}) {
     const {name, value} = e.target
     setValues({...values, [name]: value})
   }
+
+  const imageUploaded = async (e) => {
+    const res = await fetch(`${API_URL}/api/events/${event.data.id}?populate=*`)
+    const result = await res.json()
+    console.log(result)
+    setImagePreview(result.data.attributes.image.data.attributes.formats.thumbnail.url)
+    setShowModal(false)
+  }
+
 
   return (
     <Layout title='Add New Event'>
@@ -179,7 +191,7 @@ export default function EditEventPage({event}) {
         </div>
 
         <Modal show={showModal} onClose={() => setShowModal(false)}>
-          IMAGE UPLOAD
+          <ImageUpload eventId={event.data.id} imageUploaded={imageUploaded}/>
         </Modal>
     </Layout>
   )
