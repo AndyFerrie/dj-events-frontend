@@ -182,9 +182,6 @@ export async function getServerSideProps({params: {id}}) {
   const res = await fetch(`${API_URL}/api/events/${id}?populate=*`)
   const event = await res.json()  
 
-  console.log(event)
-  console.log(event.data.attributes.image.data)
-
   return {
     props: {
       event
