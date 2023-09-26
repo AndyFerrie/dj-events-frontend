@@ -36,7 +36,10 @@ export const AuthProvider = ({children}) => {
             setUser(data.user)
         } else {
             setError(data.message)
-            setError(null)
+            
+            setTimeout(() => {
+                setError(null);
+              }, 1000);
         }
     }
 

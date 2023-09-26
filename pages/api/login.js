@@ -22,7 +22,6 @@ export default async (req, res) => {
             // @todo - Set cookie
             res.status(200).json({user: data.user})
         } else {
-            console.log(data)
             res.status(data.error.status).json({message: data.error.message})
         }
 
