@@ -31,7 +31,11 @@ export default async (req, res) => {
 
             res.status(200).json({user: data.user})
         } else {
-            res.status(data.error.status).json({message: data.error.message})
+            let errorMessage = (data.error.details.errors) ? data.error.details.errors[0].message : data.error.message
+            if (errorMessage === 'identifier is a required field') {
+                errorMessage = 'email is a required field'
+            }
+            res.status(data.error.status).json({message: `${errorMessage}`})
         }
 
     } else {
