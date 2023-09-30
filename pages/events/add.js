@@ -1,15 +1,18 @@
 import { parseCookies } from "@/helpers";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Layout from "@/components/Layout";
 import { API_URL } from "@/config/index";
 import styles from "@/styles/Form.module.css";
 import slugify from "slugify";
+import AuthContext from "@/context/AuthContext";
 
 export default function AddEventPage({ token }) {
+    const { user } = useContext(AuthContext);
+
     const [values, setValues] = useState({
         name: "",
         performers: "",
@@ -19,6 +22,7 @@ export default function AddEventPage({ token }) {
         time: "",
         description: "",
         slug: "",
+        user: user.id,
     });
 
     const router = useRouter();
