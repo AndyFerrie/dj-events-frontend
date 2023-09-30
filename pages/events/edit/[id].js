@@ -1,3 +1,4 @@
+import { parseCookies } from "@/helpers";
 import moment from "moment/moment";
 import { FaImage } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,7 +14,7 @@ import { API_URL } from "@/config/index";
 import styles from "@/styles/Form.module.css";
 import slugify from "slugify";
 
-export default function EditEventPage({ event }) {
+export default function EditEventPage({ event, token }) {
     const [values, setValues] = useState({
         name: event.data.attributes.name,
         performers: event.data.attributes.performers,
@@ -50,6 +51,7 @@ export default function EditEventPage({ event }) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ data: values }),
         });
@@ -217,12 +219,15 @@ export default function EditEventPage({ event }) {
 }
 
 export async function getServerSideProps({ params: { id }, req }) {
+    const { token } = parseCookies(req);
+
     const res = await fetch(`${API_URL}/api/events/${id}?populate=*`);
     const event = await res.json();
 
     return {
         props: {
             event,
+            token,
         },
     };
 }
