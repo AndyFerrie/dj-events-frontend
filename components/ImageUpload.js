@@ -22,7 +22,6 @@ export default function ImageUpload({ eventId, imageUploaded }) {
 
         if (res.ok) {
             imageUploaded();
-            console.log("uploaded");
         }
     };
 
