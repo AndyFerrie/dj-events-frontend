@@ -216,6 +216,7 @@ export default function EditEventPage({ event, token }) {
                 <ImageUpload
                     eventId={event.data.id}
                     imageUploaded={imageUploaded}
+                    token={token}
                 />
             </Modal>
         </Layout>
