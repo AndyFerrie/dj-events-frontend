@@ -35,7 +35,7 @@ export default function EventMap({ event }) {
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_API_TOKEN}
             initialViewState={...viewport}
             style={{ width: 800, height: 500 }}
-            mapStyle="mapbox://styles/mapbox/streets-v9"
+            mapStyle="mapbox://styles/mapbox/streets-v12"
         >
             <Marker longitude={lng} latitude={lat} anchor="bottom">
                 <Image src="/images/pin.svg" width={30} height={30} />
