@@ -1,12 +1,11 @@
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "@/components/Layout";
+import EventMap from "@/components/EventMap";
 import { API_URL } from "@/config";
 import styles from "@/styles/Event.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import { FaPencilAlt, FaTimes } from "react-icons/fa";
-import { useRouter } from "next/router";
 
 export default function EventPage({ event }) {
     return (
@@ -37,6 +36,8 @@ export default function EventPage({ event }) {
                 <p>{event.attributes.description}</p>
                 <h3>Venue: {event.attributes.venue}</h3>
                 <p>{event.attributes.address}</p>
+
+                <EventMap event={event} />
 
                 <Link legacyBehavior href="/events">
                     <a className={styles.back}>{"<"} Go Back</a>
