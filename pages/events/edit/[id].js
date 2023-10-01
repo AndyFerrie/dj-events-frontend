@@ -57,6 +57,10 @@ export default function EditEventPage({ event, token }) {
         });
 
         if (!res.ok) {
+            if (res.status === 403 || res.status === 401) {
+                toast.error("Unauthorized");
+                return;
+            }
             if (res.status === 400) {
                 toast.error(
                     "Something went wrong. Check event does not already exist."
