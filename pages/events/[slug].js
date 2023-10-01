@@ -9,38 +9,9 @@ import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
 
 export default function EventPage({ event }) {
-    const router = useRouter();
-
-    const deleteEvent = async (e) => {
-        if (confirm("Are you sure?")) {
-            const res = await fetch(`${API_URL}/api/events/${event.id}`, {
-                method: "DELETE",
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                toast.error(data.message);
-            } else {
-                router.push("/events");
-            }
-        }
-    };
-
     return (
         <Layout>
             <div className={styles.event}>
-                <div className={styles.controls}>
-                    <Link legacyBehavior href={`/events/edit/${event.id}`}>
-                        <a>
-                            <FaPencilAlt /> Edit Event
-                        </a>
-                    </Link>
-                    <a href="#" className={styles.delete} onClick={deleteEvent}>
-                        <FaTimes /> Delete Event
-                    </a>
-                </div>
-
                 <span>
                     {new Date(event.attributes.date).toDateString()} at{" "}
                     {event.attributes.time}
@@ -105,14 +76,3 @@ export async function getStaticProps({ params: { slug } }) {
         revalidate: 1,
     };
 }
-
-// export async function getServerSideProps({query: {slug}}) {
-//   const res = await fetch(`${API_URL}/api/events/${slug}`)
-//   const events = await res.json()
-
-//   return {
-//     props: {
-//       event: events[0]
-//     }
-//   }
-// }
